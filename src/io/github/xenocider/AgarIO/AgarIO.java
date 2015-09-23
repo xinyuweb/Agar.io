@@ -7,7 +7,7 @@ public class AgarIO {
     }
 
     private static void startGame() {
-        
+
     }
 
 }
