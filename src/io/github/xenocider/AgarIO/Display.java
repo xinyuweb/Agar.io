@@ -10,17 +10,16 @@ public class Display{
 
     public static void main(String args[]){
 
-        createDisplay();
+
 
     }
 
-    private static void createDisplay(){
+    public static void createDisplay(){
 
         JFrame frame = new JFrame("Agar.io");
         frame.setSize(WIDTH, HEIGHT);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-
-
+        frame.setBackground(Color.WHITE);
     }
 }
