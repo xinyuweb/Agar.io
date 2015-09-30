@@ -12,8 +12,10 @@ public class Entity {
     private File skin = new File("dud");
     private Vector velocity = new Vector(0,0);
     private int[] location = {0,0};
+    private int id = -1;
 
-    public Entity() {
+    public Entity(int i) {
+        id = i;
     }
 
     public File getSkin(){
@@ -29,4 +31,11 @@ public class Entity {
     protected void setSkin(File s) {
         skin = s;
     }
+    protected void setVelocity(Vector v) {
+        velocity = v;
+    }
+    protected void setLocation(int[] l) {
+        location = l;
+    }
+
 }
