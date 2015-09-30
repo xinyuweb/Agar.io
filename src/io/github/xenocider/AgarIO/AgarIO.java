@@ -1,6 +1,6 @@
 package io.github.xenocider.AgarIO;
 
-import io.github.xenocider.AgarIO.SexyStuff.Display;
+import io.github.xenocider.AgarIO.SexyStuff.IdiotBox;
 import io.github.xenocider.AgarIO.entity.Food;
 import io.github.xenocider.AgarIO.entity.PlayerBlobs;
 
@@ -13,7 +13,7 @@ public class AgarIO {
 
     private static void startGame() {
 
-        Display.createDisplay();
+        IdiotBox.createDisplay();
         System.out.println(new PlayerBlobs().getSkin());
         System.out.println(new Food().getSkin());
 
