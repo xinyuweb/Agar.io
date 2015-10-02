@@ -1,5 +1,7 @@
 package io.github.xenocider.AgarIO.SexyStuff;
 
+import io.github.xenocider.AgarIO.GameLoop;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -17,9 +19,18 @@ public class Gooey {
 
     }
 
-    public void paint(Graphics g){
+    public static void paint(Graphics g){
 
-        g.fillRect(100,100,100,100);
+        g.clearRect(0,0,10000,10000);
+
+        //g.fillRect(100,100,100,100);
+
+        //g.setColor(Color.red);
+
+        for (int i = 0; i < GameLoop.playerBlobs.length; i++) {
+            g.fillOval(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],50,50);
+            //System.out.println("drewcircle");
+        }
 
     }
 }

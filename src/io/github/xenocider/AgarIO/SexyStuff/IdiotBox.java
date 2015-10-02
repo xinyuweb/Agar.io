@@ -7,6 +7,8 @@ public class IdiotBox {
     private static final int WIDTH = 1000;
     private static final int HEIGHT = 1000;
 
+    public static JFrame frame;
+
     public static void main(String args[]){
 
         createDisplay();
@@ -15,7 +17,7 @@ public class IdiotBox {
 
     public static void createDisplay(){
 
-        JFrame frame = new JFrame("Agar.io");
+        frame = new JFrame("Agar.io");
 
         frame.setSize(WIDTH, HEIGHT);
         frame.setVisible(true);
