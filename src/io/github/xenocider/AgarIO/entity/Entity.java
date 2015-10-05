@@ -13,6 +13,7 @@ public class Entity {
     private Vector velocity = new Vector(0,0);
     private int[] location = {50,50};
     private int id = -1;
+    private int mass = 1;
 
     public Entity() {
     }
@@ -26,6 +27,7 @@ public class Entity {
     public int[] getLocation(){
         return location;
     }
+    public int getMass() {return mass;}
 
     public void setSkin(File s) {
         skin = s;
@@ -35,6 +37,13 @@ public class Entity {
     }
     public void setLocation(int[] l) {
         location = l;
+    }
+    public void setLocation(int x, int y) {
+        int[] loc = {x,y};
+        location = loc;
+    }
+    public void setMass(int i) {
+        mass = i;
     }
 
 }

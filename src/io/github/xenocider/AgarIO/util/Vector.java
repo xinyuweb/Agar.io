@@ -25,7 +25,7 @@ public class Vector {
         magY = magY + my;
         double mag = Math.sqrt(Math.pow(magX, 2) + Math.pow(magY, 2));
         double dir = Math.atan2(magX,magY)*180/Math.PI;
-        System.out.println(dir + ", " + mag);
+        //System.out.println(dir + ", " + mag);
         return new Vector(dir, mag);
     }
 

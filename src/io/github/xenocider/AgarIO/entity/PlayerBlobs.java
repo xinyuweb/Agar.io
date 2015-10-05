@@ -11,6 +11,7 @@ public class PlayerBlobs extends Entity{
 
     public PlayerBlobs() {
         setSkin(new File("player"));
+        setLocation((int) (Math.random() * 1000), (int) (Math.random() * 1000));
     }
 
 

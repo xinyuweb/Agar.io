@@ -31,6 +31,10 @@ public class Gooey {
             g.fillOval(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],50,50);
             //System.out.println("drewcircle");
         }
+        for (int i = 0; i < GameLoop.food.length; i++) {
+            g.fillOval(GameLoop.food[i].getLocation()[0],GameLoop.food[i].getLocation()[1],25,25);
+            //System.out.println("drewcircle");
+        }
 
     }
 }

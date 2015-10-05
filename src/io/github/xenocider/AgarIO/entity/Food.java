@@ -11,6 +11,7 @@ public class Food extends Entity {
 
     public Food() {
         setSkin(new File("Food"));
+        setLocation((int) (Math.random()*1000), (int) (Math.random()*1000));
     }
 
 
