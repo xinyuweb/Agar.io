@@ -40,16 +40,16 @@ public class GameLoop implements Runnable {
 
         //Adjust player velocity
         if (KeyListener.forward) {
-            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(0,0.01));
-        }
-        if (KeyListener.back) {
             playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(180,0.01));
         }
+        if (KeyListener.back) {
+            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(0,0.01));
+        }
         if (KeyListener.left) {
-            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(90,0.01));
+            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(270,0.01));
         }
         if (KeyListener.right) {
-            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(270,0.01));
+            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(90,0.01));
         }
 
         //Set player location
@@ -58,7 +58,7 @@ public class GameLoop implements Runnable {
         double magY = playerBlobs[0].getVelocity().getMagY();
         int[] location = {loc[0] + (int)magX, loc[1] + (int)magY};
         playerBlobs[0].setLocation(location);
-        System.out.println(location[0] + ", " + location[1]);
+        //System.out.println(location[0] + ", " + location[1]);
 
 
     }
