@@ -13,5 +13,8 @@ public class Reference {
     public static final int left = KeyEvent.VK_A;
     public static final int right = KeyEvent.VK_D;
 
+    //Gravitational Multiplier
+    public static final double gravMultiplier = 1000000000000d;
+
 
 }
