@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameLoop implements Runnable {
 
-    public static PlayerBlobs[] playerBlobs = new PlayerBlobs[2];
+    public static PlayerBlobs[] playerBlobs = new PlayerBlobs[5];
     public static Food[] food = new Food[10];
 
     public static void setupGameData() {
@@ -96,9 +96,6 @@ public class GameLoop implements Runnable {
                 }
             }
         }
-
-        playerBlobs[1].setMass(60);
-
 
 
         //Set blobs locations

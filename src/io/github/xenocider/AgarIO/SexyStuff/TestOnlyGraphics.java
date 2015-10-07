@@ -18,6 +18,8 @@ public class TestOnlyGraphics {
         //g.setColor(Color.red);
 
         for (int i = 0; i < GameLoop.playerBlobs.length; i++) {
+            if (i==0) {g.setColor(Color.RED);}
+            else {g.setColor(Color.BLACK);}
             g.fillOval(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],50,50);
             //System.out.println("drewcircle");
         }
