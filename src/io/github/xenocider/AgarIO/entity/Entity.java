@@ -2,6 +2,7 @@ package io.github.xenocider.AgarIO.entity;
 
 import io.github.xenocider.AgarIO.util.Vector;
 
+import java.awt.*;
 import java.io.File;
 
 /**

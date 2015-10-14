@@ -7,7 +7,9 @@ import io.github.xenocider.AgarIO.entity.Food;
 import io.github.xenocider.AgarIO.entity.PlayerBlobs;
 import io.github.xenocider.AgarIO.listener.KeyListener;
 import io.github.xenocider.AgarIO.references.Reference;
+import io.github.xenocider.AgarIO.util.Vector;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -41,23 +43,17 @@ public class GameLoop implements Runnable {
     @Override
     public void run() {
 
+        playerBlobs[1].setMass(100);
+
         //System.out.println("loop de loop");
 
         //Adjust player velocity
-        if (KeyListener.forward) {
-            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(180,0.01));
-        }
-        if (KeyListener.back) {
-            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(0,0.01));
-        }
-        if (KeyListener.left) {
-            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(270,0.01));
-        }
-        if (KeyListener.right) {
-            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(90,0.01));
-        }
+        adjustPlayerVelocity();
+
+
 
         //TODO AI moving
+        runAI();
 
 
         for(int i = 0; i < playerBlobs.length; i++) {
@@ -73,7 +69,7 @@ public class GameLoop implements Runnable {
                         Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - food[f].getLocation()[0]), 2) + Math.pow((playerBlobs[i].getLocation()[1] - food[f].getLocation()[1]), 2)),
                         2);
                 double angle = Math.atan2((playerBlobs[i].getLocation()[0] - food[f].getLocation()[0]), (playerBlobs[i].getLocation()[1] - food[f].getLocation()[1])) * 180 / Math.PI;
-                System.out.println("Player blob:" + i + " pulling food:" + f + " at " + angle + " with " + gravity * Reference.gravMultiplier);
+                //System.out.println("Player blob:" + i + " pulling food:" + f + " at " + angle + " with " + gravity * Reference.gravMultiplier);
                 food[f].setVelocity(food[f].getVelocity().add(angle, gravity * Reference.gravMultiplier));
             }
             for (int p = 0; p < playerBlobs.length; p++) {
@@ -84,14 +80,13 @@ public class GameLoop implements Runnable {
                             playerBlobs[p] = new PlayerBlobs();
                         }
                     }
-                    //TODO gravity
                     double G = 6.67408 * Math.pow(10, -11);
 
                     double gravity = G * playerBlobs[i].getMass() / Math.pow(
                             Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0]), 2) + Math.pow((playerBlobs[i].getLocation()[1] - playerBlobs[p].getLocation()[1]), 2)),
                             2);
-                    double angle = Math.atan2((playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0]), (playerBlobs[i].getLocation()[1] - playerBlobs[p].getLocation()[1])) * 180 / Math.PI;
-                    System.out.println("Player blob:" + i + " pulling player blob:" + p + " at " + angle + " with " + gravity * Reference.gravMultiplier);
+                    double angle = Vector.getAngle(playerBlobs[i].getLocation()[0],playerBlobs[i].getLocation()[1],playerBlobs[p].getLocation()[0],playerBlobs[p].getLocation()[1]);
+                    //System.out.println("Player blob:" + i + " pulling player blob:" + p + " at " + angle + " with " + gravity * Reference.gravMultiplier);
                     playerBlobs[p].setVelocity(playerBlobs[p].getVelocity().add(angle, gravity * Reference.gravMultiplier));
                 }
             }
@@ -101,8 +96,8 @@ public class GameLoop implements Runnable {
         //Set blobs locations
         for(int i = 0; i < playerBlobs.length; i++) {
             int[] loc = playerBlobs[i].getLocation();
-            double magX = playerBlobs[i].getVelocity().getMagX();
-            double magY = playerBlobs[i].getVelocity().getMagY();
+            double magX = playerBlobs[i].getVelocity().getMagX() + playerBlobs[i].playerVelocity.getMagX();
+            double magY = playerBlobs[i].getVelocity().getMagY() + playerBlobs[i].playerVelocity.getMagY();
             int[] location = {loc[0] + (int)magX, loc[1] + (int)magY};
             playerBlobs[i].setLocation(location);
         }
@@ -113,10 +108,63 @@ public class GameLoop implements Runnable {
             int[] location = {loc[0] + (int)magX, loc[1] + (int)magY};
             food[f].setLocation(location);
         }
+        System.out.println(playerBlobs[0].getLocation()[0] + ", " + playerBlobs[0].getLocation()[1]);
 
         //Run graphics
         //Gooey.paint(IdiotBox.frame.getGraphics());
         TestOnlyGraphics.paint(IdiotBox.frame.getGraphics());
 
+    }
+
+    private void runAI() {
+        for (int i = 0; i < playerBlobs.length; i++) {
+            for (int p = 0; p < playerBlobs.length; p++) {
+                if (i != p) {
+                    double distance = Math.sqrt(Math.pow(playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0], 2) + Math.pow(playerBlobs[i].getLocation()[1] - playerBlobs[p].getLocation()[1], 2));
+                    if (distance < -1);
+                }
+            }
+        }
+    }
+
+    private void adjustPlayerVelocity() {
+
+        try {
+            double mouseX = /*MouseInfo.getPointerInfo().getLocation().getX() - */IdiotBox.frame.getMousePosition().getX();
+            double mouseY = /*MouseInfo.getPointerInfo().getLocation().getY() - */IdiotBox.frame.getMousePosition().getY();
+            double centerX = IdiotBox.frame.getWidth() / 2;
+            double centerY = IdiotBox.frame.getHeight() / 2;
+            double angle = Vector.getAngle(mouseX, mouseY, centerX, centerY);
+            double mag = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
+            mag = mag * Reference.mouseMultiplier;
+
+            if (mag > Reference.mouseMax) {
+                mag = Reference.mouseMax;
+            }
+
+            playerBlobs[0].playerVelocity = playerBlobs[0].playerVelocity.add(angle,mag);
+            System.out.println(playerBlobs[0].playerVelocity.magnitude);
+            if (playerBlobs[0].playerVelocity.magnitude > Reference.maxSpeed) {
+                playerBlobs[0].playerVelocity.magnitude = Reference.maxSpeed;
+            }
+        }
+        catch (Exception e) {
+            //e.printStackTrace();
+        }
+
+/*
+        if (KeyListener.forward) {
+            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(180,0.01));
+        }
+        if (KeyListener.back) {
+            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(0,0.01));
+        }
+        if (KeyListener.left) {
+            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(270,0.01));
+        }
+        if (KeyListener.right) {
+            playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(90,0.01));
+        }
+        */
     }
 }
