@@ -1,40 +1,18 @@
 package io.github.xenocider.AgarIO.SexyStuff;
 
-import io.github.xenocider.AgarIO.GameLoop;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class Gooey {
+@SuppressWarnings("serial")
+public class Gooey extends JPanel {
 
-    public static void main(String args[]){
-
-
-
-    }
-
-    public static void GUI(){
-
-        System.out.println("Bugah");
-
-    }
-
-    public static void paint(Graphics g){
-
-        g.clearRect(0,0,10000,10000);
-
-        //g.fillRect(100,100,100,100);
-
-        //g.setColor(Color.red);
-
-        for (int i = 0; i < GameLoop.playerBlobs.length; i++) {
-            g.fillOval(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],50,50);
-            //System.out.println("drewcircle");
-        }
-        for (int i = 0; i < GameLoop.food.length; i++) {
-            g.fillOval(GameLoop.food[i].getLocation()[0],GameLoop.food[i].getLocation()[1],25,25);
-            //System.out.println("drewcircle");
-        }
-
+    @Override
+    public void paint(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(Color.RED);
+        g2d.fillOval(0, 0, 30, 30);
+        g2d.drawOval(0, 50, 30, 30);
+        g2d.fillRect(50, 0, 30, 30);
+        g2d.drawRect(50, 50, 30, 30);
     }
 }

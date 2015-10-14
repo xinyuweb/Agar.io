@@ -1,6 +1,5 @@
 package io.github.xenocider.AgarIO;
 
-import io.github.xenocider.AgarIO.SexyStuff.Gooey;
 import io.github.xenocider.AgarIO.SexyStuff.IdiotBox;
 import io.github.xenocider.AgarIO.SexyStuff.TestOnlyGraphics;
 import io.github.xenocider.AgarIO.entity.Food;
@@ -23,6 +22,8 @@ public class GameLoop implements Runnable {
 
     public static PlayerBlobs[] playerBlobs = new PlayerBlobs[5];
     public static Food[] food = new Food[10];
+    boolean running;
+
 
     public static void setupGameData() {
 
@@ -37,7 +38,10 @@ public class GameLoop implements Runnable {
 
     public static void startLoop() {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+
         ScheduledFuture gameLoop = executor.scheduleWithFixedDelay(new GameLoop(), 0, 30, TimeUnit.MILLISECONDS);
+
+
     }
 
     @Override
