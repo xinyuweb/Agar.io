@@ -1,6 +1,7 @@
 package io.github.xenocider.AgarIO.SexyStuff;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class IdiotBox {
 
@@ -22,6 +23,13 @@ public class IdiotBox {
         frame.setSize(WIDTH, HEIGHT);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        updateDisplay();
+
+    }
+
+    public static void updateDisplay(){
+
+        
 
     }
 }
