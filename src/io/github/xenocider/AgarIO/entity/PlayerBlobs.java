@@ -11,6 +11,7 @@ public class PlayerBlobs extends Entity{
 
     public Vector playerVelocity = new Vector(0,0);
     private int id = 0;
+    public Entity target = null;
 
     public PlayerBlobs() {
         setSkin(new File("player"));

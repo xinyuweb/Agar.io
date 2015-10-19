@@ -25,6 +25,13 @@ public class Debug {
         catch (Exception ex){
 
         }
+        try {
+            PlayerBlobs p = (PlayerBlobs) e;
+            System.out.println("Target = " + p.target.toString() + " at " + p.target.getLocation()[0] + ", " + p.target.getLocation()[1]);
+        }
+        catch (Exception ex) {
+
+        }
     }
 
 }

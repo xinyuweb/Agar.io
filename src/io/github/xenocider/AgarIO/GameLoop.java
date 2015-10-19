@@ -64,7 +64,7 @@ public class GameLoop implements Runnable {
         //Eating food/players & setting gravity effects
         for(int i = 0; i < playerBlobs.length; i++) {
             for (int f = 0; f < food.length; f++) {
-                if (Math.abs(playerBlobs[i].getLocation()[0] - food[f].getLocation()[0]) < 50 && Math.abs(playerBlobs[i].getLocation()[1] - food[f].getLocation()[1]) < 50) {
+                if (Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - food[f].getLocation()[0]), 2) + (Math.pow((playerBlobs[i].getLocation()[1] - food[f].getLocation()[1]), 2))) < playerBlobs[i].getMass()*5) {
                     playerBlobs[i].setMass(playerBlobs[i].getMass() + food[f].getMass());
                     food[f] = new Food();
                 }
@@ -81,11 +81,12 @@ public class GameLoop implements Runnable {
             }
             for (int p = 0; p < playerBlobs.length; p++) {
                 if (i!=p && playerBlobs[i].getID() != playerBlobs[p].getID()){
-                    if (Math.abs(playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0]) < 50 && Math.abs(playerBlobs[i].getLocation()[1] - playerBlobs[p].getLocation()[1]) < 50) {
+                    if (Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0]), 2) + (Math.pow((playerBlobs[i].getLocation()[1]- playerBlobs[p].getLocation()[1]), 2))) < playerBlobs[i].getMass()*5) {
                         if (playerBlobs[i].getMass() > playerBlobs[p].getMass() * 1.5) {
                             playerBlobs[i].setMass(playerBlobs[i].getMass() + playerBlobs[p].getMass());
                             playerBlobs[p] = new PlayerBlobs();
                             playerBlobs[p].setID(p);
+                            playerBlobs[p].setMass(2);
                         }
                     }
                     if (Reference.gravityOn) {
@@ -113,6 +114,23 @@ public class GameLoop implements Runnable {
             double magY = playerBlobs[i].velocity.getMagY() + playerBlobs[i].playerVelocity.getMagY();
             int[] location = {loc[0] + (int)magX, loc[1] + (int)magY};
             playerBlobs[i].setLocation(location);
+            //Boundaries
+            if (playerBlobs[i].getLocation()[0] > Reference.mapSize) {
+                playerBlobs[i].setLocation(Reference.mapSize, playerBlobs[i].getLocation()[1]);
+                playerBlobs[i].velocity.magnitude = 0;
+            }
+            if (playerBlobs[i].getLocation()[1] > Reference.mapSize) {
+                playerBlobs[i].setLocation(playerBlobs[i].getLocation()[0], Reference.mapSize);
+                playerBlobs[i].velocity.magnitude = 0;
+            }
+            if (playerBlobs[i].getLocation()[0] < 0) {
+                playerBlobs[i].setLocation(0, playerBlobs[i].getLocation()[1]);
+                playerBlobs[i].velocity.magnitude = 0;
+            }
+            if (playerBlobs[i].getLocation()[1] < 0) {
+                playerBlobs[i].setLocation(playerBlobs[i].getLocation()[0], 0);
+                playerBlobs[i].velocity.magnitude = 0;
+            }
         }
         for(int f = 0; f < food.length; f++) {
             int[] loc = food[f].getLocation();
@@ -121,6 +139,7 @@ public class GameLoop implements Runnable {
             int[] location = {loc[0] + (int)magX, loc[1] + (int)magY};
             food[f].setLocation(location);
         }
+
         //System.out.println(playerBlobs[0].getLocation()[0] + ", " + playerBlobs[0].getLocation()[1]);
 
         //Run graphics
@@ -157,11 +176,13 @@ public class GameLoop implements Runnable {
                     double angle = Vector.getAngle(closestFood.getLocation()[0], closestFood.getLocation()[1], playerBlobs[i].getLocation()[0], playerBlobs[i].getLocation()[1]);
                     double mag = 0.1;
                     playerBlobs[i].playerVelocity.add(angle, mag);
+                    playerBlobs[i].target = closestFood;
                 }
                 else {
                     double angle = Vector.getAngle(closestPlayer.getLocation()[0], closestPlayer.getLocation()[1], playerBlobs[i].getLocation()[0], playerBlobs[i].getLocation()[1]);
                     double mag = 0.1;
                     playerBlobs[i].playerVelocity.add(angle, mag);
+                    playerBlobs[i].target = closestPlayer;
                 }
             }
         }

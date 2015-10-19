@@ -16,15 +16,18 @@ public class TestOnlyGraphics {
         //g.fillRect(100,100,100,100);
 
         //g.setColor(Color.red);
+
         g.setColor(Color.RED);
         for (int i = 0; i < GameLoop.playerBlobs.length; i++) {
-            g.fillOval(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],GameLoop.playerBlobs[i].getMass()*10,GameLoop.playerBlobs[i].getMass()*10);
+            g.fillOval(GameLoop.playerBlobs[i].getLocation()[0]-GameLoop.playerBlobs[i].getMass()*5,GameLoop.playerBlobs[i].getLocation()[1]-GameLoop.playerBlobs[i].getMass()*5,GameLoop.playerBlobs[i].getMass()*10,GameLoop.playerBlobs[i].getMass()*10);
+            g.setColor(Color.GREEN);
+            g.fillRect(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],1,1);
             g.setColor(Color.BLUE);
             //System.out.println("drewcircle");
         }
         g.setColor(Color.BLACK);
         for (int i = 0; i < GameLoop.food.length; i++) {
-            g.fillOval(GameLoop.food[i].getLocation()[0],GameLoop.food[i].getLocation()[1],GameLoop.food[i].getMass()*10,GameLoop.food[i].getMass()*10);
+            g.fillOval(GameLoop.food[i].getLocation()[0]-GameLoop.food[i].getMass()*5,GameLoop.food[i].getLocation()[1]-GameLoop.food[i].getMass()*5,GameLoop.food[i].getMass()*10,GameLoop.food[i].getMass()*10);
             //System.out.println("drewcircle");
         }
 
