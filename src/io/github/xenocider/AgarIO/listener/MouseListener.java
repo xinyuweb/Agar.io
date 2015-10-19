@@ -29,12 +29,13 @@ public class MouseListener implements MouseInputListener {
     public void mousePressed(MouseEvent e) {
 
         for (int i = 0; i < GameLoop.playerBlobs.length; i++) {
-            if (10 < Math.abs(GameLoop.playerBlobs[i].getLocation()[0] - e.getX()) && 10 < Math.abs(GameLoop.playerBlobs[i].getLocation()[1] - e.getY())) {
+            if (50 > Math.abs(GameLoop.playerBlobs[i].getLocation()[0] - e.getX()) && 50 > Math.abs(GameLoop.playerBlobs[i].getLocation()[1] - e.getY())) {
                 Debug.debug(GameLoop.playerBlobs[i]);
+                //System.out.println(e.getX() + " " + GameLoop.playerBlobs[i].getLocation()[0]);
             }
         }
         for (int i = 0; i < GameLoop.food.length; i++) {
-            if (10 < Math.abs(GameLoop.food[i].getLocation()[0] - e.getX()) && 10 < Math.abs(GameLoop.food[i].getLocation()[1] - e.getY())) {
+            if (50 > Math.abs(GameLoop.food[i].getLocation()[0] - e.getX()) && 50 > Math.abs(GameLoop.food[i].getLocation()[1] - e.getY())) {
                 Debug.debug(GameLoop.food[i]);
             }
         }

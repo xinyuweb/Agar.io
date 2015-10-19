@@ -18,6 +18,13 @@ public class Debug {
         System.out.println("Mass = " + e.getMass());
         System.out.println("Skin = " + e.getSkin());
         System.out.println("Velocity = " + e.velocity.magnitude + " at " + e.velocity.direction + "*");
+        try {
+            PlayerBlobs p = (PlayerBlobs) e;
+            System.out.println("PVelocity = " + p.playerVelocity.magnitude + " at " + p.playerVelocity.direction + "*");
+        }
+        catch (Exception ex){
+
+        }
     }
 
 }

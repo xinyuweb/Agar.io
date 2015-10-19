@@ -85,6 +85,7 @@ public class GameLoop implements Runnable {
                         if (playerBlobs[i].getMass() > playerBlobs[p].getMass() * 1.5) {
                             playerBlobs[i].setMass(playerBlobs[i].getMass() + playerBlobs[p].getMass());
                             playerBlobs[p] = new PlayerBlobs();
+                            playerBlobs[p].setID(p);
                         }
                     }
                     if (Reference.gravityOn) {
