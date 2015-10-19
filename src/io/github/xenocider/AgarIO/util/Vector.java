@@ -13,7 +13,7 @@ public class Vector {
         magnitude = m;
     }
 
-    public Vector add(double d, double m) {
+    public void add(double d, double m) {
         double magX = Math.sin(direction * Math.PI / 180)*magnitude;
         double magY = Math.cos(direction * Math.PI / 180)*magnitude;
         //System.out.println(d + " & " + m);
@@ -26,7 +26,8 @@ public class Vector {
         double mag = Math.sqrt(Math.pow(magX, 2) + Math.pow(magY, 2));
         double dir = Math.atan2(magX,magY)*180/Math.PI;
         //System.out.println(dir + ", " + mag);
-        return new Vector(dir, mag);
+        direction = dir;
+        magnitude = mag;
     }
 
     public double getMagX() {
@@ -40,4 +41,5 @@ public class Vector {
     public static double getAngle(double x1, double y1, double x2, double y2) {
         return Math.atan2((x1 - x2),(y1 - y2)) * 180 / Math.PI;
     }
+
 }

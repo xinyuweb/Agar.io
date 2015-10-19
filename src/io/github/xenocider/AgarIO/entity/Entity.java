@@ -11,7 +11,7 @@ import java.io.File;
 public class Entity {
 
     private File skin = new File("dud");
-    private Vector velocity = new Vector(0,0);
+    public Vector velocity = new Vector(0,0);
     private int[] location = {50,50};
     private int id = -1;
     private int mass = 1;
@@ -22,9 +22,7 @@ public class Entity {
     public File getSkin(){
         return skin;
     }
-    public Vector getVelocity(){
-        return velocity;
-    }
+
     public int[] getLocation(){
         return location;
     }
@@ -33,9 +31,7 @@ public class Entity {
     public void setSkin(File s) {
         skin = s;
     }
-    public void setVelocity(Vector v) {
-        velocity = v;
-    }
+
     public void setLocation(int[] l) {
         location = l;
     }

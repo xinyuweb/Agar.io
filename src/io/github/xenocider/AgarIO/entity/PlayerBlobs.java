@@ -10,11 +10,18 @@ import java.io.File;
 public class PlayerBlobs extends Entity{
 
     public Vector playerVelocity = new Vector(0,0);
+    private int id = 0;
 
     public PlayerBlobs() {
         setSkin(new File("player"));
         setLocation((int) (Math.random() * 1000), (int) (Math.random() * 1000));
     }
 
+    public int getID() {
+        return id;
+    }
+    public void setID(int i) {
+        id = i;
+    }
 
 }

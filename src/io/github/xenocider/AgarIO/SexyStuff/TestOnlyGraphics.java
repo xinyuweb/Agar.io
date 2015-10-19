@@ -16,15 +16,15 @@ public class TestOnlyGraphics {
         //g.fillRect(100,100,100,100);
 
         //g.setColor(Color.red);
-
+        g.setColor(Color.RED);
         for (int i = 0; i < GameLoop.playerBlobs.length; i++) {
-            if (i==0) {g.setColor(Color.RED);}
-            else {g.setColor(Color.BLACK);}
-            g.fillOval(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],50,50);
+            g.fillOval(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],GameLoop.playerBlobs[i].getMass()*10,GameLoop.playerBlobs[i].getMass()*10);
+            g.setColor(Color.BLUE);
             //System.out.println("drewcircle");
         }
+        g.setColor(Color.BLACK);
         for (int i = 0; i < GameLoop.food.length; i++) {
-            g.fillOval(GameLoop.food[i].getLocation()[0],GameLoop.food[i].getLocation()[1],25,25);
+            g.fillOval(GameLoop.food[i].getLocation()[0],GameLoop.food[i].getLocation()[1],GameLoop.food[i].getMass()*10,GameLoop.food[i].getMass()*10);
             //System.out.println("drewcircle");
         }
 
