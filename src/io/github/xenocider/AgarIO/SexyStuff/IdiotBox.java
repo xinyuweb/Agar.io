@@ -2,6 +2,8 @@ package io.github.xenocider.AgarIO.SexyStuff;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Graphics2D.*;
+import java.awt.geom.Arc2D;
 
 public class IdiotBox {
 
@@ -10,9 +12,16 @@ public class IdiotBox {
 
     public static JFrame frame;
 
+    public static int targetFPS = 60;
+    public static double FPS;
+    public static double frames;
+    public static double seconds = System.nanoTime();
+
+
     public static void main(String args[]){
 
         createDisplay();
+        updateDisplay();
 
     }
 
@@ -23,13 +32,17 @@ public class IdiotBox {
         frame.setSize(WIDTH, HEIGHT);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        updateDisplay();
 
     }
 
+
     public static void updateDisplay(){
 
-        
+        while (true){
+
+            FPS = FPS / seconds;
+            System.out.println(FPS);
+        }
 
     }
 }

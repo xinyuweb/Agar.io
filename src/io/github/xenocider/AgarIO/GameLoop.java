@@ -202,6 +202,7 @@ public class GameLoop implements Runnable {
                 mag = Reference.mouseMax;
             }
 
+<<<<<<< Updated upstream
             playerBlobs[0].playerVelocity.add(angle,mag);
             //System.out.println(playerBlobs[0].playerVelocity.magnitude);
         }
@@ -223,5 +224,8 @@ public class GameLoop implements Runnable {
             playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(90,0.01));
         }
         */
+=======
+
+>>>>>>> Stashed changes
     }
 }
