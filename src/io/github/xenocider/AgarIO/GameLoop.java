@@ -226,12 +226,19 @@ public class GameLoop implements Runnable {
             if (mag > Reference.mouseMax) {
                 mag = Reference.mouseMax;
             }
+<<<<<<< HEAD
             for(int i = 0; i < playerBlobs.size(); i++) {
                 if (playerBlobs.get(i).getID() == 0) {
                     playerBlobs.get(i).playerVelocity.add(angle, mag);
                 }
                 //System.out.println(playerBlobs[0].playerVelocity.magnitude);
             }
+=======
+
+
+            playerBlobs[0].playerVelocity.add(angle,mag);
+            //System.out.println(playerBlobs[0].playerVelocity.magnitude);
+>>>>>>> origin/master
         }
         catch (Exception e) {
             //e.printStackTrace();
