@@ -17,11 +17,13 @@ public class TestOnlyGraphics {
 
         //g.setColor(Color.red);
 
-        g.setColor(Color.RED);
-        for (int i = 0; i < GameLoop.playerBlobs.length; i++) {
-            g.fillOval(GameLoop.playerBlobs[i].getLocation()[0]-GameLoop.playerBlobs[i].getMass()*5,GameLoop.playerBlobs[i].getLocation()[1]-GameLoop.playerBlobs[i].getMass()*5,GameLoop.playerBlobs[i].getMass()*10,GameLoop.playerBlobs[i].getMass()*10);
+        for (int i = 0; i < GameLoop.playerBlobs.size(); i++) {
+            if(GameLoop.playerBlobs.get(i).getID()==0) {
+                g.setColor(Color.RED);
+            }
+            g.fillOval(GameLoop.playerBlobs.get(i).getLocation()[0]-GameLoop.playerBlobs.get(i).getMass()*5,GameLoop.playerBlobs.get(i).getLocation()[1]-GameLoop.playerBlobs.get(i).getMass()*5,GameLoop.playerBlobs.get(i).getMass()*10,GameLoop.playerBlobs.get(i).getMass()*10);
             g.setColor(Color.GREEN);
-            g.fillRect(GameLoop.playerBlobs[i].getLocation()[0],GameLoop.playerBlobs[i].getLocation()[1],1,1);
+            g.fillRect(GameLoop.playerBlobs.get(i).getLocation()[0],GameLoop.playerBlobs.get(i).getLocation()[1],1,1);
             g.setColor(Color.BLUE);
             //System.out.println("drewcircle");
         }

@@ -32,6 +32,7 @@ public class Debug {
         catch (Exception ex) {
 
         }
+        System.out.println("Friction on = " + e.friction);
     }
 
 }

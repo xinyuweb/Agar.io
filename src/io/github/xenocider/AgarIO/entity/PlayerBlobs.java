@@ -1,5 +1,6 @@
 package io.github.xenocider.AgarIO.entity;
 
+import io.github.xenocider.AgarIO.references.Reference;
 import io.github.xenocider.AgarIO.util.Vector;
 
 import java.io.File;
@@ -13,9 +14,19 @@ public class PlayerBlobs extends Entity{
     private int id = 0;
     public Entity target = null;
 
-    public PlayerBlobs() {
+    public PlayerBlobs(int id) {
         setSkin(new File("player"));
-        setLocation((int) (Math.random() * 1000), (int) (Math.random() * 1000));
+        System.out.println("Reg Blob created");
+        setLocation((int) (Math.random() * Reference.mapSize), (int) (Math.random() * Reference.mapSize));
+        setMass(2);
+        setID(id);
+    }
+    public PlayerBlobs(int id, int mass,int x, int y) {
+        System.out.println("Split created");
+        setSkin(new File("player"));
+        setLocation(x,y);
+        setMass(mass);
+        setID(id);
     }
 
     public int getID() {

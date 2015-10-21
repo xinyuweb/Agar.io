@@ -12,6 +12,8 @@ import io.github.xenocider.AgarIO.util.Vector;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.Ref;
+import java.util.*;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -22,17 +24,16 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameLoop implements Runnable {
 
-    public static PlayerBlobs[] playerBlobs = new PlayerBlobs[5];
+    public static List<PlayerBlobs> playerBlobs = new ArrayList<PlayerBlobs>();
     public static Food[] food = new Food[10];
     boolean running;
 
 
     public static void setupGameData() {
 
-        for(int i = 0; i < playerBlobs.length; i++) {
-            playerBlobs[i] = new PlayerBlobs();
-            playerBlobs[i].setID(i);
-            playerBlobs[i].setMass(2);
+        for(int i = 0; i < Reference.playersMax; i++) {
+            playerBlobs.add(new PlayerBlobs(i));
+            System.out.println(i);
         }
         for(int i = 0; i < food.length; i++) {
             food[i] = new Food();
@@ -62,77 +63,101 @@ public class GameLoop implements Runnable {
         }
 
         //Eating food/players & setting gravity effects
-        for(int i = 0; i < playerBlobs.length; i++) {
+        for(int i = 0; i < playerBlobs.size(); i++) {
             for (int f = 0; f < food.length; f++) {
-                if (Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - food[f].getLocation()[0]), 2) + (Math.pow((playerBlobs[i].getLocation()[1] - food[f].getLocation()[1]), 2))) < playerBlobs[i].getMass()*5) {
-                    playerBlobs[i].setMass(playerBlobs[i].getMass() + food[f].getMass());
+                if (Math.sqrt(Math.pow((playerBlobs.get(i).getLocation()[0] - food[f].getLocation()[0]), 2) + (Math.pow((playerBlobs.get(i).getLocation()[1] - food[f].getLocation()[1]), 2))) < playerBlobs.get(i).getMass()*5) {
+                    playerBlobs.get(i).setMass(playerBlobs.get(i).getMass() + food[f].getMass());
                     food[f] = new Food();
                 }
                 if (Reference.gravityOn) {
                     double G = 6.67408 * Math.pow(10, -11);
 
-                    double gravity = G * playerBlobs[i].getMass() / Math.pow(
-                            Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - food[f].getLocation()[0]), 2) + Math.pow((playerBlobs[i].getLocation()[1] - food[f].getLocation()[1]), 2)),
+                    double gravity = G * playerBlobs.get(i).getMass() / Math.pow(
+                            Math.sqrt(Math.pow((playerBlobs.get(i).getLocation()[0] - food[f].getLocation()[0]), 2) + Math.pow((playerBlobs.get(i).getLocation()[1] - food[f].getLocation()[1]), 2)),
                             2);
-                    double angle = Math.atan2((playerBlobs[i].getLocation()[0] - food[f].getLocation()[0]), (playerBlobs[i].getLocation()[1] - food[f].getLocation()[1])) * 180 / Math.PI;
+                    double angle = Math.atan2((playerBlobs.get(i).getLocation()[0] - food[f].getLocation()[0]), (playerBlobs.get(i).getLocation()[1] - food[f].getLocation()[1])) * 180 / Math.PI;
                     //System.out.println("Player blob:" + i + " pulling food:" + f + " at " + angle + " with " + gravity * Reference.gravMultiplier);
                     food[f].velocity.add(angle, gravity * Reference.gravMultiplier);
+                    if (gravity*Reference.gravMultiplier > Reference.fricitonLimit) {
+                        food[f].friction = false;
+                    }
                 }
             }
-            for (int p = 0; p < playerBlobs.length; p++) {
-                if (i!=p && playerBlobs[i].getID() != playerBlobs[p].getID()){
-                    if (Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0]), 2) + (Math.pow((playerBlobs[i].getLocation()[1]- playerBlobs[p].getLocation()[1]), 2))) < playerBlobs[i].getMass()*5) {
-                        if (playerBlobs[i].getMass() > playerBlobs[p].getMass() * 1.5) {
-                            playerBlobs[i].setMass(playerBlobs[i].getMass() + playerBlobs[p].getMass());
-                            playerBlobs[p] = new PlayerBlobs();
-                            playerBlobs[p].setID(p);
-                            playerBlobs[p].setMass(2);
+            for (int p = 0; p < playerBlobs.size(); p++) {
+                if (i!=p && playerBlobs.get(i).getID() != playerBlobs.get(p).getID()){
+                    if (Math.sqrt(Math.pow((playerBlobs.get(i).getLocation()[0] - playerBlobs.get(p).getLocation()[0]), 2) + (Math.pow((playerBlobs.get(i).getLocation()[1]- playerBlobs.get(p).getLocation()[1]), 2))) < playerBlobs.get(i).getMass()*5) {
+                        if (playerBlobs.get(i).getMass() > playerBlobs.get(p).getMass() * 1.5) {
+                            playerBlobs.get(i).setMass(playerBlobs.get(i).getMass() + playerBlobs.get(p).getMass());
+                            playerBlobs.add(new PlayerBlobs(playerBlobs.get(p).getID()));
+                            playerBlobs.remove(p);
                         }
                     }
                     if (Reference.gravityOn) {
                         double G = 6.67408 * Math.pow(10, -11);
 
-                        double gravity = G * playerBlobs[i].getMass() / Math.pow(
-                                Math.sqrt(Math.pow((playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0]), 2) + Math.pow((playerBlobs[i].getLocation()[1] - playerBlobs[p].getLocation()[1]), 2)),
+                        double gravity = G * playerBlobs.get(i).getMass() / Math.pow(
+                                Math.sqrt(Math.pow((playerBlobs.get(i).getLocation()[0] - playerBlobs.get(p).getLocation()[0]), 2) + Math.pow((playerBlobs.get(i).getLocation()[1] - playerBlobs.get(p).getLocation()[1]), 2)),
                                 2);
-                        double angle = Vector.getAngle(playerBlobs[i].getLocation()[0], playerBlobs[i].getLocation()[1], playerBlobs[p].getLocation()[0], playerBlobs[p].getLocation()[1]);
+                        double angle = Vector.getAngle(playerBlobs.get(i).getLocation()[0], playerBlobs.get(i).getLocation()[1], playerBlobs.get(p).getLocation()[0], playerBlobs.get(p).getLocation()[1]);
                         //System.out.println("Player blob:" + i + " pulling player blob:" + p + " at " + angle + " with " + gravity * Reference.gravMultiplier);
-                        playerBlobs[p].velocity.add(angle, gravity * Reference.gravMultiplier);
+                        playerBlobs.get(p).velocity.add(angle, gravity * Reference.gravMultiplier);
+                        if (gravity*Reference.gravMultiplier > Reference.fricitonLimit) {
+                            playerBlobs.get(p).friction = false;
+                        }
                     }
                 }
             }
         }
 
 
+
+
         //Set blobs locations
-        for(int i = 0; i < playerBlobs.length; i++) {
-            if (playerBlobs[i].playerVelocity.magnitude > Reference.maxSpeed) {
-                playerBlobs[i].playerVelocity.magnitude = Reference.maxSpeed;
+        for(int i = 0; i < playerBlobs.size(); i++) {
+            //Add friction
+            if (playerBlobs.get(i).friction) {
+                if (playerBlobs.get(i).velocity.magnitude > Reference.friction) {
+                    playerBlobs.get(i).velocity.magnitude = playerBlobs.get(i).velocity.magnitude - Reference.friction;
+                } else {
+                    playerBlobs.get(i).velocity.magnitude = 0;
+                }
             }
-            int[] loc = playerBlobs[i].getLocation();
-            double magX = playerBlobs[i].velocity.getMagX() + playerBlobs[i].playerVelocity.getMagX();
-            double magY = playerBlobs[i].velocity.getMagY() + playerBlobs[i].playerVelocity.getMagY();
+            if (playerBlobs.get(i).playerVelocity.magnitude > Reference.maxSpeed) {
+                playerBlobs.get(i).playerVelocity.magnitude = Reference.maxSpeed;
+            }
+            int[] loc = playerBlobs.get(i).getLocation();
+            double magX = playerBlobs.get(i).velocity.getMagX() + playerBlobs.get(i).playerVelocity.getMagX();
+            double magY = playerBlobs.get(i).velocity.getMagY() + playerBlobs.get(i).playerVelocity.getMagY();
             int[] location = {loc[0] + (int)magX, loc[1] + (int)magY};
-            playerBlobs[i].setLocation(location);
+            playerBlobs.get(i).setLocation(location);
             //Boundaries
-            if (playerBlobs[i].getLocation()[0] > Reference.mapSize) {
-                playerBlobs[i].setLocation(Reference.mapSize, playerBlobs[i].getLocation()[1]);
-                playerBlobs[i].velocity.magnitude = 0;
+            if (playerBlobs.get(i).getLocation()[0] > Reference.mapSize) {
+                playerBlobs.get(i).setLocation(Reference.mapSize, playerBlobs.get(i).getLocation()[1]);
+                playerBlobs.get(i).velocity.magnitude = 0;
             }
-            if (playerBlobs[i].getLocation()[1] > Reference.mapSize) {
-                playerBlobs[i].setLocation(playerBlobs[i].getLocation()[0], Reference.mapSize);
-                playerBlobs[i].velocity.magnitude = 0;
+            if (playerBlobs.get(i).getLocation()[1] > Reference.mapSize) {
+                playerBlobs.get(i).setLocation(playerBlobs.get(i).getLocation()[0], Reference.mapSize);
+                playerBlobs.get(i).velocity.magnitude = 0;
             }
-            if (playerBlobs[i].getLocation()[0] < 0) {
-                playerBlobs[i].setLocation(0, playerBlobs[i].getLocation()[1]);
-                playerBlobs[i].velocity.magnitude = 0;
+            if (playerBlobs.get(i).getLocation()[0] < 0) {
+                playerBlobs.get(i).setLocation(0, playerBlobs.get(i).getLocation()[1]);
+                playerBlobs.get(i).velocity.magnitude = 0;
             }
-            if (playerBlobs[i].getLocation()[1] < 0) {
-                playerBlobs[i].setLocation(playerBlobs[i].getLocation()[0], 0);
-                playerBlobs[i].velocity.magnitude = 0;
+            if (playerBlobs.get(i).getLocation()[1] < 0) {
+                playerBlobs.get(i).setLocation(playerBlobs.get(i).getLocation()[0], 0);
+                playerBlobs.get(i).velocity.magnitude = 0;
             }
+            playerBlobs.get(i).friction=true;
         }
         for(int f = 0; f < food.length; f++) {
+            //Add friction
+            if (food[f].friction) {
+                if (food[f].velocity.magnitude > Reference.friction) {
+                    food[f].velocity.magnitude = food[f].velocity.magnitude - Reference.friction;
+                } else {
+                    food[f].velocity.magnitude = 0;
+                }
+            }
             int[] loc = food[f].getLocation();
             double magX = food[f].velocity.getMagX();
             double magY = food[f].velocity.getMagY();
@@ -151,15 +176,15 @@ public class GameLoop implements Runnable {
         double closestDistance = 1000000;
         PlayerBlobs closestPlayer = null;
         Food closestFood = null;
-        for (int i = 0; i < playerBlobs.length; i++) {
-            if (playerBlobs[i].getID() != 0) {
-                for (int p = 0; p < playerBlobs.length; p++) {
-                    if (playerBlobs[i].getMass() > playerBlobs[p].getMass() * 1.5) {
-                        if (i != p && playerBlobs[i].getID() != playerBlobs[p].getID()) {
-                            double distance = Math.sqrt(Math.pow(playerBlobs[i].getLocation()[0] - playerBlobs[p].getLocation()[0], 2) + Math.pow(playerBlobs[i].getLocation()[1] - playerBlobs[p].getLocation()[1], 2));
+        for (int i = 0; i < playerBlobs.size(); i++) {
+            if (playerBlobs.get(i).getID() != 0) {
+                for (int p = 0; p < playerBlobs.size(); p++) {
+                    if (playerBlobs.get(i).getMass() > playerBlobs.get(p).getMass() * 1.5) {
+                        if (i != p && playerBlobs.get(i).getID() != playerBlobs.get(p).getID()) {
+                            double distance = Math.sqrt(Math.pow(playerBlobs.get(i).getLocation()[0] - playerBlobs.get(p).getLocation()[0], 2) + Math.pow(playerBlobs.get(i).getLocation()[1] - playerBlobs.get(p).getLocation()[1], 2));
                             if (distance < closestDistance) {
                                 closestDistance = distance;
-                                closestPlayer = playerBlobs[p];
+                                closestPlayer = playerBlobs.get(p);
                             }
                         }
 
@@ -167,22 +192,22 @@ public class GameLoop implements Runnable {
                 }
                 if (closestPlayer == null) {
                     for (int f = 0; f < food.length; f++) {
-                        double distance = Math.sqrt(Math.pow(playerBlobs[i].getLocation()[0] - food[f].getLocation()[0], 2) + Math.pow(playerBlobs[i].getLocation()[1] - food[f].getLocation()[1], 2));
+                        double distance = Math.sqrt(Math.pow(playerBlobs.get(i).getLocation()[0] - food[f].getLocation()[0], 2) + Math.pow(playerBlobs.get(i).getLocation()[1] - food[f].getLocation()[1], 2));
                         if (distance < closestDistance) {
                             closestDistance = distance;
                             closestFood = food[f];
                         }
                     }
-                    double angle = Vector.getAngle(closestFood.getLocation()[0], closestFood.getLocation()[1], playerBlobs[i].getLocation()[0], playerBlobs[i].getLocation()[1]);
+                    double angle = Vector.getAngle(closestFood.getLocation()[0], closestFood.getLocation()[1], playerBlobs.get(i).getLocation()[0], playerBlobs.get(i).getLocation()[1]);
                     double mag = 0.1;
-                    playerBlobs[i].playerVelocity.add(angle, mag);
-                    playerBlobs[i].target = closestFood;
+                    playerBlobs.get(i).playerVelocity.add(angle, mag);
+                    playerBlobs.get(i).target = closestFood;
                 }
                 else {
-                    double angle = Vector.getAngle(closestPlayer.getLocation()[0], closestPlayer.getLocation()[1], playerBlobs[i].getLocation()[0], playerBlobs[i].getLocation()[1]);
+                    double angle = Vector.getAngle(closestPlayer.getLocation()[0], closestPlayer.getLocation()[1], playerBlobs.get(i).getLocation()[0], playerBlobs.get(i).getLocation()[1]);
                     double mag = 0.1;
-                    playerBlobs[i].playerVelocity.add(angle, mag);
-                    playerBlobs[i].target = closestPlayer;
+                    playerBlobs.get(i).playerVelocity.add(angle, mag);
+                    playerBlobs.get(i).target = closestPlayer;
                 }
             }
         }
@@ -201,9 +226,12 @@ public class GameLoop implements Runnable {
             if (mag > Reference.mouseMax) {
                 mag = Reference.mouseMax;
             }
-
-            playerBlobs[0].playerVelocity.add(angle,mag);
-            //System.out.println(playerBlobs[0].playerVelocity.magnitude);
+            for(int i = 0; i < playerBlobs.size(); i++) {
+                if (playerBlobs.get(i).getID() == 0) {
+                    playerBlobs.get(i).playerVelocity.add(angle, mag);
+                }
+                //System.out.println(playerBlobs[0].playerVelocity.magnitude);
+            }
         }
         catch (Exception e) {
             //e.printStackTrace();
@@ -223,5 +251,23 @@ public class GameLoop implements Runnable {
             playerBlobs[0].setVelocity(playerBlobs[0].getVelocity().add(90,0.01));
         }
         */
+
+        //SPLIT
+        if (KeyListener.split) {
+            List<Integer> blobs = new ArrayList<Integer>();
+            for(int i = 0; i < playerBlobs.size(); i++) {
+                if (playerBlobs.get(i).getID() == 0 && playerBlobs.get(i).getMass() > Reference.splitMin) {
+                    blobs.add(i);
+                }
+            }
+            for(int i = 0; i < blobs.size(); i++) {
+                playerBlobs.get(blobs.get(i)).setMass(playerBlobs.get(blobs.get(i)).getMass()/2);
+                playerBlobs.add(new PlayerBlobs(0, playerBlobs.get(blobs.get(i)).getMass(), playerBlobs.get(blobs.get(i)).getLocation()[0] + 12, playerBlobs.get(blobs.get(i)).getLocation()[1] + 12));
+            }
+            KeyListener.split = false;
+        }
+
+
+
     }
 }

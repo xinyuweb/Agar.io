@@ -14,6 +14,8 @@ public class KeyListener implements java.awt.event.KeyListener {
     public static boolean left = false;
     public static boolean right = false;
 
+    public static boolean split = false;
+
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -33,6 +35,9 @@ public class KeyListener implements java.awt.event.KeyListener {
         if(e.getKeyCode() == Reference.right) {
             right = true;
         }
+        if(e.getKeyCode() == Reference.split) {
+            split = true;
+        }
     }
 
     @Override
@@ -48,6 +53,9 @@ public class KeyListener implements java.awt.event.KeyListener {
         }
         if(e.getKeyCode() == Reference.right) {
             right = false;
+        }
+        if(e.getKeyCode() == Reference.split) {
+            split = false;
         }
     }
 }

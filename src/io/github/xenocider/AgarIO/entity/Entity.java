@@ -15,6 +15,7 @@ public class Entity {
     private int[] location = {50,50};
     private int id = -1;
     private int mass = 1;
+    public boolean friction = true;
 
     public Entity() {
     }

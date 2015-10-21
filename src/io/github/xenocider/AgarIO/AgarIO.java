@@ -22,8 +22,6 @@ public class AgarIO {
     private static void setupGame() {
 
         IdiotBox.createDisplay();
-        System.out.println(new PlayerBlobs().getSkin());
-        System.out.println(new Food().getSkin());
         IdiotBox.frame.addKeyListener(new KeyListener());
         IdiotBox.frame.addMouseListener(new MouseListener());
         IdiotBox.frame.setFocusable(true);
