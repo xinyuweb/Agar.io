@@ -38,6 +38,8 @@ public class GameLoop implements Runnable {
         for(int i = 0; i < food.length; i++) {
             food[i] = new Food();
         }
+        playerBlobs.get(0).setMass(4);
+        playerBlobs.get(1).setMass(10);
 
     }
 
@@ -88,21 +90,39 @@ public class GameLoop implements Runnable {
                     if (Math.sqrt(Math.pow((playerBlobs.get(i).getLocation()[0] - playerBlobs.get(p).getLocation()[0]), 2) + (Math.pow((playerBlobs.get(i).getLocation()[1]- playerBlobs.get(p).getLocation()[1]), 2))) < playerBlobs.get(i).getMass()*5) {
                         if (playerBlobs.get(i).getMass() > playerBlobs.get(p).getMass() * 1.5) {
                             playerBlobs.get(i).setMass(playerBlobs.get(i).getMass() + playerBlobs.get(p).getMass());
-                            playerBlobs.add(new PlayerBlobs(playerBlobs.get(p).getID()));
+                                int quantity = 0;
+                            for (int q = 0; q < playerBlobs.size(); q++) {
+                                    if (playerBlobs.get(q).getID() == playerBlobs.get(p).getID()) {
+                                        quantity = quantity + 1;
+                                    }
+                                }
+                                if (quantity == 1) {
+                                    playerBlobs.add(new PlayerBlobs(playerBlobs.get(p).getID()));
+                                }
                             playerBlobs.remove(p);
                         }
                     }
                     if (Reference.gravityOn) {
                         double G = 6.67408 * Math.pow(10, -11);
 
-                        double gravity = G * playerBlobs.get(i).getMass() / Math.pow(
-                                Math.sqrt(Math.pow((playerBlobs.get(i).getLocation()[0] - playerBlobs.get(p).getLocation()[0]), 2) + Math.pow((playerBlobs.get(i).getLocation()[1] - playerBlobs.get(p).getLocation()[1]), 2)),
-                                2);
+                        try {
+                            double gravity = G * playerBlobs.get(i).getMass() / Math.pow(
+                                    Math.sqrt(Math.pow((playerBlobs.get(i).getLocation()[0] - playerBlobs.get(p).getLocation()[0]), 2) + Math.pow((playerBlobs.get(i).getLocation()[1] - playerBlobs.get(p).getLocation()[1]), 2)),
+                                    2);
+
+
                         double angle = Vector.getAngle(playerBlobs.get(i).getLocation()[0], playerBlobs.get(i).getLocation()[1], playerBlobs.get(p).getLocation()[0], playerBlobs.get(p).getLocation()[1]);
                         //System.out.println("Player blob:" + i + " pulling player blob:" + p + " at " + angle + " with " + gravity * Reference.gravMultiplier);
+
                         playerBlobs.get(p).velocity.add(angle, gravity * Reference.gravMultiplier);
-                        if (gravity*Reference.gravMultiplier > Reference.fricitonLimit) {
+
+                        if (gravity * Reference.gravMultiplier > Reference.fricitonLimit) {
                             playerBlobs.get(p).friction = false;
+
+                        }
+                        }
+                        catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -122,8 +142,8 @@ public class GameLoop implements Runnable {
                     playerBlobs.get(i).velocity.magnitude = 0;
                 }
             }
-            if (playerBlobs.get(i).playerVelocity.magnitude > Reference.maxSpeed) {
-                playerBlobs.get(i).playerVelocity.magnitude = Reference.maxSpeed;
+            if (playerBlobs.get(i).playerVelocity.magnitude > Reference.maxSpeed - Math.pow(playerBlobs.get(i).getMass(),Reference.massSlownessMultiplier)) {
+                playerBlobs.get(i).playerVelocity.magnitude = Reference.maxSpeed - Math.pow(playerBlobs.get(i).getMass(),Reference.massSlownessMultiplier);
             }
             int[] loc = playerBlobs.get(i).getLocation();
             double magX = playerBlobs.get(i).velocity.getMagX() + playerBlobs.get(i).playerVelocity.getMagX();
@@ -163,6 +183,23 @@ public class GameLoop implements Runnable {
             double magY = food[f].velocity.getMagY();
             int[] location = {loc[0] + (int)magX, loc[1] + (int)magY};
             food[f].setLocation(location);
+            //Boundaries
+            if (food[f].getLocation()[0] > Reference.mapSize) {
+                food[f].setLocation(Reference.mapSize, food[f].getLocation()[1]);
+                food[f].velocity.magnitude = 0;
+            }
+            if (food[f].getLocation()[1] > Reference.mapSize) {
+                food[f].setLocation(food[f].getLocation()[0], Reference.mapSize);
+                food[f].velocity.magnitude = 0;
+            }
+            if (food[f].getLocation()[0] < 0) {
+                food[f].setLocation(0, food[f].getLocation()[1]);
+                food[f].velocity.magnitude = 0;
+            }
+            if (food[f].getLocation()[1] < 0) {
+                food[f].setLocation(food[f].getLocation()[0], 0);
+                food[f].velocity.magnitude = 0;
+            }
         }
 
         //System.out.println(playerBlobs[0].getLocation()[0] + ", " + playerBlobs[0].getLocation()[1]);
@@ -219,26 +256,23 @@ public class GameLoop implements Runnable {
             double mouseY = /*MouseInfo.getPointerInfo().getLocation().getY() - */IdiotBox.frame.getMousePosition().getY();
             double centerX = IdiotBox.frame.getWidth() / 2;
             double centerY = IdiotBox.frame.getHeight() / 2;
-            double angle = Vector.getAngle(mouseX, mouseY, centerX, centerY);
-            double mag = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
-            mag = mag * Reference.mouseMultiplier;
+            //double angle = Vector.getAngle(mouseX, mouseY, centerX, centerY);
+            //double mag = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
 
-            if (mag > Reference.mouseMax) {
-                mag = Reference.mouseMax;
-            }
-<<<<<<< HEAD
             for(int i = 0; i < playerBlobs.size(); i++) {
+
                 if (playerBlobs.get(i).getID() == 0) {
+                    double angle = Vector.getAngle(mouseX,mouseY,playerBlobs.get(i).getLocation()[0],playerBlobs.get(i).getLocation()[1]);
+                    double mag = Math.sqrt(Math.pow(mouseX - playerBlobs.get(i).getLocation()[0], 2) + Math.pow(mouseY - playerBlobs.get(i).getLocation()[1], 2));
+                    mag = mag * Reference.mouseMultiplier;
+
+                    if (mag > Reference.mouseMax) {
+                        mag = Reference.mouseMax;
+                    }
                     playerBlobs.get(i).playerVelocity.add(angle, mag);
                 }
                 //System.out.println(playerBlobs[0].playerVelocity.magnitude);
             }
-=======
-
-
-            playerBlobs[0].playerVelocity.add(angle,mag);
-            //System.out.println(playerBlobs[0].playerVelocity.magnitude);
->>>>>>> origin/master
         }
         catch (Exception e) {
             //e.printStackTrace();
@@ -263,7 +297,7 @@ public class GameLoop implements Runnable {
         if (KeyListener.split) {
             List<Integer> blobs = new ArrayList<Integer>();
             for(int i = 0; i < playerBlobs.size(); i++) {
-                if (playerBlobs.get(i).getID() == 0 && playerBlobs.get(i).getMass() > Reference.splitMin) {
+                if (playerBlobs.get(i).getID() == 0 && playerBlobs.get(i).getMass() >= Reference.splitMin) {
                     blobs.add(i);
                 }
             }
@@ -277,4 +311,5 @@ public class GameLoop implements Runnable {
 
 
     }
+
 }

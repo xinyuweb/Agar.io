@@ -29,10 +29,12 @@ public class Reference {
     public static final double gravMultiplier = 1000000000000d;
 
     //Movement Variables
-    public static final double mouseMultiplier = 0.01;
-    public static final double mouseMax = 0.1;
-    public static final double maxSpeed = 3;
+    public static final double mouseMultiplier = 0.05;
+    public static final double mouseMax = 2;
+    public static final double maxSpeed = 5;
     public static final double friction = 0.2;
-    public static final double fricitonLimit = 0.001;
+    public static final double fricitonLimit = 0.0001;
+    public static final double massSlownessMultiplier = 0.5;
+
 
 }
