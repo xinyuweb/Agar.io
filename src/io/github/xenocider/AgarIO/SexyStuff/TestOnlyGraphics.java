@@ -1,6 +1,7 @@
 package io.github.xenocider.AgarIO.SexyStuff;
 
 import io.github.xenocider.AgarIO.GameLoop;
+import io.github.xenocider.AgarIO.references.Reference;
 
 import java.awt.*;
 
@@ -18,18 +19,18 @@ public class TestOnlyGraphics {
         //g.setColor(Color.red);
 
         for (int i = 0; i < GameLoop.playerBlobs.size(); i++) {
+            g.setColor(Color.BLUE);
             if(GameLoop.playerBlobs.get(i).getID()==0) {
                 g.setColor(Color.RED);
             }
-            g.fillOval(GameLoop.playerBlobs.get(i).getLocation()[0]-GameLoop.playerBlobs.get(i).getMass()*5,GameLoop.playerBlobs.get(i).getLocation()[1]-GameLoop.playerBlobs.get(i).getMass()*5,GameLoop.playerBlobs.get(i).getMass()*10,GameLoop.playerBlobs.get(i).getMass()*10);
+            g.fillOval((int) (GameLoop.playerBlobs.get(i).getLocation()[0]-GameLoop.playerBlobs.get(i).getMass()*Reference.zoom),(int) (GameLoop.playerBlobs.get(i).getLocation()[1]-GameLoop.playerBlobs.get(i).getMass()*Reference.zoom),(int) (GameLoop.playerBlobs.get(i).getMass()*10),(int) (GameLoop.playerBlobs.get(i).getMass()*10));
             g.setColor(Color.GREEN);
-            g.fillRect(GameLoop.playerBlobs.get(i).getLocation()[0],GameLoop.playerBlobs.get(i).getLocation()[1],1,1);
-            g.setColor(Color.BLUE);
+            g.fillRect((int)GameLoop.playerBlobs.get(i).getLocation()[0],(int)GameLoop.playerBlobs.get(i).getLocation()[1],1,1);
             //System.out.println("drewcircle");
         }
-        g.setColor(Color.BLACK);
-        for (int i = 0; i < GameLoop.food.length; i++) {
-            g.fillOval(GameLoop.food[i].getLocation()[0]-GameLoop.food[i].getMass()*5,GameLoop.food[i].getLocation()[1]-GameLoop.food[i].getMass()*5,GameLoop.food[i].getMass()*10,GameLoop.food[i].getMass()*10);
+        for (int i = 0; i < GameLoop.food.size(); i++) {
+            g.setColor(Color.BLACK);
+            g.fillOval((int) (GameLoop.food.get(i).getLocation()[0]-GameLoop.food.get(i).getMass()*Reference.zoom),(int) (GameLoop.food.get(i).getLocation()[1]-GameLoop.food.get(i).getMass()*Reference.zoom),(int) (GameLoop.food.get(i).getMass()*10),(int) (GameLoop.food.get(i).getMass()*10));
             //System.out.println("drewcircle");
         }
 

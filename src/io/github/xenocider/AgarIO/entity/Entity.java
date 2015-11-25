@@ -12,9 +12,9 @@ public class Entity {
 
     private File skin = new File("dud");
     public Vector velocity = new Vector(0,0);
-    private int[] location = {50,50};
+    private double[] location = {50,50};
     private int id = -1;
-    private int mass = 1;
+    private double mass = 1;
     public boolean friction = true;
 
     public Entity() {
@@ -24,24 +24,26 @@ public class Entity {
         return skin;
     }
 
-    public int[] getLocation(){
+    public double[] getLocation(){
         return location;
     }
-    public int getMass() {return mass;}
+    public double getMass() {return mass;}
 
     public void setSkin(File s) {
         skin = s;
     }
 
-    public void setLocation(int[] l) {
+    public void setLocation(double[] l) {
         location = l;
     }
-    public void setLocation(int x, int y) {
-        int[] loc = {x,y};
+    public void setLocation(double x, double y) {
+        double[] loc = {x,y};
         location = loc;
     }
-    public void setMass(int i) {
+    public void setMass(double i) {
         mass = i;
     }
+
+    public Vector getVelocity() {return velocity;}
 
 }

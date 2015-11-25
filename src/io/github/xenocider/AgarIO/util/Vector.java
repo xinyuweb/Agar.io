@@ -35,11 +35,22 @@ public class Vector {
     }
 
     public double getMagY() {
-        return Math.cos(direction*Math.PI/180)*magnitude;
+        return Math.cos(direction * Math.PI / 180)*magnitude;
     }
 
     public static double getAngle(double x1, double y1, double x2, double y2) {
         return Math.atan2((x1 - x2),(y1 - y2)) * 180 / Math.PI;
+    }
+
+    public double getMag() {
+        return magnitude;
+    }
+
+    public static double getMagX(double d, double m) {
+        return Math.sin(d*Math.PI/180)*m;
+    }
+    public static double getMagY(double d, double m) {
+        return Math.cos(d*Math.PI/180)*m;
     }
 
 }

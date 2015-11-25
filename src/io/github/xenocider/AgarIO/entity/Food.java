@@ -14,5 +14,11 @@ public class Food extends Entity {
         setLocation((int) (Math.random()*1000), (int) (Math.random()*1000));
     }
 
+    public Food(double mass, double x, double y) {
+        setSkin(new File("Food"));
+        setLocation(x,y);
+        setMass(mass);
+    }
+
 
 }

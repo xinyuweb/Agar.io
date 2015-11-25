@@ -21,10 +21,10 @@ public class Debug {
         try {
             PlayerBlobs p = (PlayerBlobs) e;
             System.out.println("PVelocity = " + p.playerVelocity.magnitude + " at " + p.playerVelocity.direction + "*");
+            System.out.println("# of twins: " + p.getTwin().size());
             System.out.println("Target = " + p.target.toString() + " at " + p.target.getLocation()[0] + ", " + p.target.getLocation()[1]);
         }
         catch (Exception ex) {
-
         }
         System.out.println("Friction on = " + e.friction);
     }

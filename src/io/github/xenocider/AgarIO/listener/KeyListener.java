@@ -38,6 +38,14 @@ public class KeyListener implements java.awt.event.KeyListener {
         if(e.getKeyCode() == Reference.split) {
             split = true;
         }
+        if(e.getKeyCode() == Reference.pause) {
+            if (Reference.playGame) {
+                Reference.playGame = false;
+            }
+            else {
+                Reference.playGame = true;
+            }
+        }
     }
 
     @Override
