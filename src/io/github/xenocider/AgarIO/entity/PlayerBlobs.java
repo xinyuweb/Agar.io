@@ -19,6 +19,7 @@ public class PlayerBlobs extends Entity{
     public Entity target = null;
     public int rejoinTime = -1;
     private List<PlayerBlobs> twin = new ArrayList<PlayerBlobs>();
+    public boolean ai = true;
 
     public PlayerBlobs(int id) {
         setSkin(new File("player"));
@@ -27,12 +28,13 @@ public class PlayerBlobs extends Entity{
         setMass(2);
         setID(id);
     }
-    public PlayerBlobs(int id, double mass,double x, double y, List<PlayerBlobs> t) {
+    public PlayerBlobs(int id, double mass,double x, double y, List<PlayerBlobs> t, boolean ai) {
         System.out.println("Split created");
         setSkin(new File("player"));
         setLocation(x, y);
         setMass(mass);
         setID(id);
+        this.ai = ai;
         //setTwin(t);
         try {
         for (int i = 0; i < t.size(); i++) {
@@ -57,13 +59,13 @@ public class PlayerBlobs extends Entity{
 
     public void rejoin() {
 
-        System.out.println("Combining " + this.toString() + " and " + twin.get(twin.size()-1).toString());
+        //System.out.println("Combining " + this.toString() + " and " + twin.get(twin.size()-1).toString());
         this.setMass(this.getMass() + twin.get(twin.size() - 1).getMass());
 
-        System.out.println("# of twins = " + twin.size());
+        //System.out.println("# of twins = " + twin.size());
         GameLoop.playerBlobs.remove(twin.get(twin.size() - 1));
         twin.remove(twin.size() - 1);
-        System.out.println("Removed a twin from " + this.toString());
+        //System.out.println("Removed a twin from " + this.toString());
         if (twin.size() > 0) {
             restartRejoin();
         }
@@ -102,7 +104,6 @@ public class PlayerBlobs extends Entity{
     }
 
     public void addTwin(PlayerBlobs p) {
-        System.out.println("adding to twin list");
         twin.add(p);
         System.out.println(twin.toString());
     }
@@ -114,11 +115,35 @@ public class PlayerBlobs extends Entity{
     public void explode() {
         double excessMass = this.getMass() -2;
         this.setMass(2);
-        for (int i = 0; i <= excessMass/5; i++) {
-            Food f = new Food(2, this.getLocation()[0], this.getLocation()[1]);
+        for (int i = 0; i <= excessMass/1; i++) {
+            Food f = new Food(1, this.getLocation()[0], this.getLocation()[1]);
+            f.velocity = new Vector(Math.random()*360, Math.random()*10+10);
+            if (this.getLocation()[0] > Reference.mapSize-100) {
+                f.velocity = new Vector(Math.random()*180+180, Math.random()*10+10);
+            }
+            if (this.getLocation()[1] > Reference.mapSize-100) {
+                f.velocity = new Vector(Math.random()*180+90, Math.random()*10+10);
+            }
+            if (this.getLocation()[0] < 100) {
+                f.velocity = new Vector(Math.random()*180, Math.random()*10+10);
+            }
+            if (this.getLocation()[1] < 100) {
+                f.velocity = new Vector(Math.random()*180-90, Math.random()*10+10);
+            }
+            if (this.getLocation()[0] > Reference.mapSize-100 && this.getLocation()[1] > Reference.mapSize-100) {
+                f.velocity = new Vector(Math.random()*90+90, Math.random()*10+10);
+            }
+            if (this.getLocation()[0] > Reference.mapSize-100 && this.getLocation()[1] < 100) {
+                f.velocity = new Vector(Math.random()*90+180, Math.random()*10+10);
+            }
+            if (this.getLocation()[0] < 100 && this.getLocation()[1] > Reference.mapSize-100) {
+                f.velocity = new Vector(Math.random()*90, Math.random()*10+10);
+            }
+            if (this.getLocation()[0] < 100 && this.getLocation()[1] < 100) {
+                f.velocity = new Vector(Math.random()*90-90, Math.random()*10+10);
+            }
+            f.setLocation(f.getLocation()[0] + f.getVelocity().getMagX(), f.getLocation()[1] + f.getVelocity().getMagY());
             GameLoop.food.add(f);
-            f.velocity = new Vector(Math.random()*360, 0);
-            //TODO Food doesn't shoot out
         }
     }
 

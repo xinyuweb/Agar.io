@@ -1,6 +1,7 @@
 package io.github.xenocider.AgarIO.listener;
 
 import io.github.xenocider.AgarIO.GameLoop;
+import io.github.xenocider.AgarIO.SexyStuff.IdiotBox;
 import io.github.xenocider.AgarIO.util.Debug;
 
 import javax.swing.event.MouseInputListener;
@@ -28,14 +29,29 @@ public class MouseListener implements MouseInputListener {
     @Override
     public void mousePressed(MouseEvent e) {
 
+        double xOffset = 0;
+        double yOffset = 0;
+        double count = 0;
+        double xTotal = 0;
+        double yTotal = 0;
         for (int i = 0; i < GameLoop.playerBlobs.size(); i++) {
-            if (50 > Math.abs(GameLoop.playerBlobs.get(i).getLocation()[0] - e.getX()) && 50 > Math.abs(GameLoop.playerBlobs.get(i).getLocation()[1] - e.getY())) {
+            if(GameLoop.playerBlobs.get(i).getID()==0) {
+                xTotal = xTotal + GameLoop.playerBlobs.get(i).getLocation()[0];
+                yTotal = yTotal + GameLoop.playerBlobs.get(i).getLocation()[1];
+                count = count + 1;
+            }
+        }
+        xOffset = xTotal/count- IdiotBox.frame.getWidth() / 2;
+        yOffset = yTotal/count-IdiotBox.frame.getHeight() / 2;
+
+        for (int i = 0; i < GameLoop.playerBlobs.size(); i++) {
+            if (50 > Math.abs(GameLoop.playerBlobs.get(i).getLocation()[0]-xOffset - e.getX()) && 50 > Math.abs(GameLoop.playerBlobs.get(i).getLocation()[1]-yOffset - e.getY())) {
                 Debug.debug(GameLoop.playerBlobs.get(i));
                 //System.out.println(e.getX() + " " + GameLoop.playerBlobs[i].getLocation()[0]);
             }
         }
         for (int i = 0; i < GameLoop.food.size(); i++) {
-            if (50 > Math.abs(GameLoop.food.get(i).getLocation()[0] - e.getX()) && 50 > Math.abs(GameLoop.food.get(i).getLocation()[1] - e.getY())) {
+            if (50 > Math.abs(GameLoop.food.get(i).getLocation()[0]-xOffset - e.getX()) && 50 > Math.abs(GameLoop.food.get(i).getLocation()[1]-yOffset - e.getY())) {
                 Debug.debug(GameLoop.food.get(i));
             }
         }

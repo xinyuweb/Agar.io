@@ -1,5 +1,6 @@
 package io.github.xenocider.AgarIO.entity;
 
+import io.github.xenocider.AgarIO.references.Reference;
 import io.github.xenocider.AgarIO.util.Vector;
 
 import java.io.File;
@@ -11,7 +12,7 @@ public class Food extends Entity {
 
     public Food() {
         setSkin(new File("Food"));
-        setLocation((int) (Math.random()*1000), (int) (Math.random()*1000));
+        setLocation((int) (Math.random()* Reference.mapSize), (int) (Math.random()*Reference.mapSize));
     }
 
     public Food(double mass, double x, double y) {

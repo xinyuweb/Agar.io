@@ -1,5 +1,9 @@
 package io.github.xenocider.AgarIO.util;
 
+import io.github.xenocider.AgarIO.GameLoop;
+
+import java.util.List;
+
 /**
  * Created by ict11 on 2015-09-28.
  */
@@ -50,7 +54,7 @@ public class Vector {
         return Math.sin(d*Math.PI/180)*m;
     }
     public static double getMagY(double d, double m) {
-        return Math.cos(d*Math.PI/180)*m;
+        return Math.cos(d * Math.PI / 180)*m;
     }
 
 }

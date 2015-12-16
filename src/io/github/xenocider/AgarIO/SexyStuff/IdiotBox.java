@@ -9,7 +9,7 @@ import java.awt.geom.Arc2D;
 
 public class IdiotBox {
 
-    private static final int WIDTH = 1000;
+    public static final int WIDTH = 1000;
     private static final int HEIGHT = 1000;
 
     public static JFrame frame;
@@ -32,6 +32,6 @@ public class IdiotBox {
 
     public static void updateDisplay(){
 
-            System.out.println(seconds/frameConstant);
+            //System.out.println(seconds/frameConstant);
     }
 }
